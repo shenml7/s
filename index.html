@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+<meta http-equiv="Expires" content="0">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Cache-Control" content="no-cache">
+<meta http-equiv="Cache" content="no-cache">
+<title>统名标签</title>
+<link rel="stylesheet" href="css/style.css">
+<link rel="icon" href="css/favicon.ico" type="image/x-icon"/>
+<script src="https://libs.baidu.com/jquery/2.1.4/jquery.min.js"></script>
+<script src="js/min.js?v=20230718"></script>
+<script src="js/shuju.js?v=20230718"></script>
+</head>
+<body>
+
+<div class="form-group">
+    <select name="pets" id="pet-select" class="selectt" onchange = "checkLawyerType();">
+	<option value="统名标签.btw">标签</option>
+    <option value="空白.btw">空白</option>
+    <option value="入库.btw">入库</option>
+    <option value="开包.btw">开包</option>
+</select>
+    <input class="form-field" type="number" id="CopiesInput" value="1"onkeypress="keyPress1();" >
+</div>
+<div class="form-group" id="dataL">
+    <span class="form-group11">原料名称</span>
+    <input class="form-field" type="text" id="CopiesInputz" onkeypress="keyPress2();" >
+    <div id="dataSpan" class="dataSpan1">
+    </div>	
+</div>
+<div class="form-group">
+    <span class="form-group11" id="wenben" >生产日期</span>
+    <input class="form-field" type="number" id="CopiesInputx" oninput="if(value.length>4)value=value.slice(0,8);" onkeypress="keyPress3();" >
+	
+</div>
+<div class="form-group" id="wenben1">
+    <span class="form-group11">月</span>
+    <input class="form-field" type="number" id="CopiesInputc" value="12" onkeypress="keyPress4();"  >
+</div>
+<div class="form-group" id="wenben2">
+    <span class="form-group11">天</span>
+    <input class="form-field" type="number" id="CopiesInputv" value="0" onkeypress="keyPress5();"  >
+</div>
+<div class="form-group" id="wenben3">
+    <span class="form-group11">推</span>
+    <input class="form-field" type="number" id="CopiesInputb" value="-1" onkeypress="keyPress6();" >
+	
+</div>
+<div class="form-group" id="wenben4">
+    <span class="form-group11">入库日期</span>
+    <input class="form-field" type="number" id="CopiesInputn" oninput="if(value.length>4)value=value.slice(0,8);" onkeypress="keyPress7();" >
+</div>
+<div class="form-group" id="wenben5">
+    <span class="form-group11">到期日期</span>
+    <input class="form-field" type="number" id="CopiesInputm" oninput="if(value.length>4)value=value.slice(0,8);" onkeypress="keyPress8();" >
+</div>
+
+<div class="form-groupp">
+<input type="checkbox" id="but" class="form-but">
+<label class="form-label" id="bodyy" for="but">到期为空</label>
+<button class="form-button" id="myButton" onclick="printLabel()" >打印</button>
+</div>
+<div class="cd-popup" role="alert">
+	<div class="cd-popup-container">
+            <div class="noti-layout-six__wrapper">
+              <div class="row">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                  <img src="css/happiness.png" alt="" class="noti-layout-six__hppns-img">
+                  <h1 class="noti-layout-six__heading">打印成功</h1>
+                </div>
+                <div class="col-lg-12 col-md-12 col--sm-12 col-xs-12">
+                  <div class="noti-layout-six__success-para-wrap">
+                    <p class="noti-layout-six__paragraph">确定</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+		<a href="#0" class="cd-popup-close img-replace"></a>
+	</div> 
+</div>
+</body>
+<script>
+jQuery(document).ready(function ($) {
+  $('.cd-popup').on('click', function (event) {
+    if ($(event.target).is('.cd-popup-close') || $(event.target).is('.cd-popup')) {
+      event.preventDefault();
+      $(this).removeClass('is-visible');
+    }
+  });
+
+});
+$("input").focus(function(){
+  this.select();
+});
+
+
+document.oncontextmenu=function(e){
+    e.preventDefault();
+};
+const input = document.getElementById('CopiesInputz');
+const content = document.getElementById('dataSpan');
+
+input.addEventListener('click', function(e) {
+  e.stopPropagation(); // 阻止冒泡
+  content.style.display = 'block';
+});
+
+document.addEventListener('click', function(e) {
+  const target = e.target;
+  if (target !== input && target.parentNode !== content && target !== content && !content.contains(target)) {
+    content.style.display = 'none';
+  }
+});
+    
+
+
+
+var CopiesInputz = document.getElementById('CopiesInputz');
+CopiesInputz.oninput = function () {
+   var str = $('#CopiesInputz').val();
+    initDataL(jsonData,str);
+};
+ 
+function ulClick() {
+    var str = $(this).children().eq(0).text();
+	document.getElementById("CopiesInputc").value = $(this).children().eq(1).text();
+	document.getElementById("CopiesInputv").value = $(this).children().eq(2).text();
+	document.getElementById("CopiesInputb").value = $(this).children().eq(3).text();
+    $('#dataL input').val(str);
+    $('#dataSpan').css('display','none');
+}
+ 
+ 
+function initDataL(data,str) {
+    var v = '';
+    for(var i in data){
+      var cInfo = data[i].emailInfo;
+      var arr = cInfo.toString().split('.');
+ 
+      if(str != ''){
+          if(cInfo.indexOf(str) > -1){
+              v = v + '<ul>\n' +
+                  '            <li class="liss1">'+arr[0]+'</li>\n' +
+                  '            <li class="liss">'+arr[1]+'</li>\n' +
+                  '            <li class="liss">'+arr[2]+'</li>\n' +
+                  '            <li class="liss">'+arr[3]+'</li>\n' +				  
+                  '        </ul>';
+
+          }
+      }
+ 
+    }
+    $('#dataSpan').html(v);
+    $('#dataSpan ul').click(ulClick);
+}
+
+
+</script>
+</html>
